@@ -1,0 +1,27 @@
+---Sent Today Query to use in a Suprression File---
+SELECT s.JobID,
+s.SubscriberKey,
+s.EventDate,
+j.EmailName,
+j.EmailSubject,
+j.TriggererSendDefinitionObjectID
+FROM [_Sent] s INNER JOIN [_Job] j ON s.JobID = j.JobID 
+WHERE j.TriggererSendDefinitionObjectID IS NULL AND CONVERT(DATE,s.EventDate) = CONVERT(DATE,GETDATE())
+---Triggered Send emails are excluded so that only campaigns can be excluded as a suppression---
+
+
+---Welcome Series---
+
+SELECT s.JobID,
+s.SubscriberKey,
+s.EventDate,
+j.EmailName,
+j.EmailSubject
+FROM [_Sent] s INNER JOIN [_Job] j ON s.JobID = j.JobID 
+WHERE j.EmailName in ('WELCOMESERIEST1', 
+'WELCOMESERIESFAQT2', 
+'WELCOMESERIES3APPTOUCH',  
+'WELCOMESERIES4AUTOREORDER',
+'WelcomeSeriesTouch5InstaRx',
+'WELCOMESERIES6RTB',
+'WELCOMESERIES7COUPONCODE') AND CONVERT(DATE,s.EventDate) <= DATEADD(DAY, -6,CONVERT(DATE,GETDATE()))
